@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+jwt:
+  secret: NDQ1Mjc1Mzg1OTU1NjQ1MzY1NDQxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTA
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+           default-filters:
+            - name: AuthenticationFilter # ??? ?????? ??? ????? "Factory"
+           routes:
+            - id: auth-service
+              uri: ${SERVICES_AUTH_URL:http://localhost:8081}
+              predicates:
+                - Path=/api/v1/auth/**
+
+            - id: user-service
+              uri: ${SERVICES_USER_URL:http://localhost:8082}
+              predicates:
+                - Path=/api/v1/users/**
+
+            - id: order-service
+              uri: ${SERVICES_ORDER_URL:http://localhost:8083}
+              predicates:
+                 - Path=/api/v1/orders/**
+
+            - id: payment-service
+              uri: ${SERVICES_PAYMENT_URL:http://localhost:8084}
+              predicates:
+                 - Path=/api/v1/payments/**
