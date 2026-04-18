@@ -11,8 +11,11 @@ spring:
     gateway:
       server:
         webflux:
+           httpclient:
+             connect-timeout: 2000
+             response-timeout: 5s
            default-filters:
-            - name: AuthenticationFilter # ??? ?????? ??? ????? "Factory"
+            - name: AuthenticationFilter
            routes:
             - id: auth-service
               uri: ${SERVICES_AUTH_URL:http://localhost:8081}
